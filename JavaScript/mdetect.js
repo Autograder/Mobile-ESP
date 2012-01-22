@@ -1,6 +1,13 @@
 
 /* *******************************************
-// Copyright 2010-2011, Anthony Hand
+// Copyright 2010-2012, Anthony Hand
+//
+// File version date: January 21, 2012
+//		Update: 
+//		- Moved Windows Phone 7 to the iPhone Tier. WP7.5's IE 9-based browser is good enough now.  
+//		- Added a new variable for 2 versions of the new BlackBerry Bold Touch (9900 and 9930): deviceBBBoldTouch. 
+//		- Updated DetectBlackBerryTouch() to support the 2 versions of the new BlackBerry Bold Touch (9900 and 9930). 
+//		- Updated DetectKindle() to focus on eInk devices only. The Kindle Fire should be detected as a regular Android device.
 //
 // File version date: August 22, 2011
 //		Update: 
@@ -17,14 +24,6 @@
 //		- Updated DetectAndroidPhone() and DetectAndroidTablet() to properly detect devices running Opera Mobile.
 //		- Created 2 new methods: DetectOperaAndroidPhone() and DetectOperaAndroidTablet(). 
 //		- Updated DetectTierIphone(). Removed the call to DetectMaemoTablet(), an obsolete mobile OS.
-//
-// File version date: July 15, 2011
-//		Update: 
-//		- Refactored the variable called maemoTablet. Its new name is the more generic deviceTablet.
-//		- Created the variable deviceWebOShp for HP's line of WebOS devices starting with the TouchPad tablet.
-//		- Created the DetectWebOSTablet() method for HP's line of WebOS tablets starting with the TouchPad tablet.
-//		- Updated the DetectTierTablet() method to also search for WebOS tablets. 
-//		- Updated the DetectMaemoTablet() method to disambiguate against WebOS tablets which share some signature traits. 
 //
 //
 // LICENSE INFORMATION
@@ -109,7 +108,8 @@ var enginePie = "wm5 pie";  //An old Windows Mobile
 var deviceBB = "blackberry";
 var vndRIM = "vnd.rim"; //Detectable when BB devices emulate IE or Firefox
 var deviceBBStorm = "blackberry95"; //Storm 1 and 2
-var deviceBBBold = "blackberry97"; //Bold
+var deviceBBBold = "blackberry97"; //Bold 97x0 (non-touch)
+var deviceBBBoldTouch = "blackberry 99"; //Bold 99x0 (touchscreen)
 var deviceBBTour = "blackberry96"; //Tour
 var deviceBBCurve = "blackberry89"; //Curve 2
 var deviceBBTorch = "blackberry 98"; //Torch
@@ -442,12 +442,13 @@ function DetectBlackBerryWebKit()
 
 //**************************
 // Detects if the current browser is a BlackBerry Touch
-//    device, such as the Storm or Torch. Excludes the Playbook.
+//    device, such as the Storm, Torch, and Bold Touch. Excludes the Playbook.
 function DetectBlackBerryTouch()
 {
    if (DetectBlackBerry() &&
         ((uagent.search(deviceBBStorm) > -1) ||
-        (uagent.search(deviceBBTorch) > -1)))
+        (uagent.search(deviceBBTorch) > -1) ||
+        (uagent.search(deviceBBBoldTouch) > -1)))
       return true;
    else
       return false;
@@ -457,10 +458,10 @@ function DetectBlackBerryTouch()
 // Detects if the current browser is a BlackBerry OS 5 device AND
 //    has a more capable recent browser. Excludes the Playbook.
 //    Examples, Storm, Bold, Tour, Curve2
-//    Excludes the new BlackBerry OS 6 browser!!
+//    Excludes the new BlackBerry OS 6 and 7 browser!!
 function DetectBlackBerryHigh()
 {
-   //Disambiguate for BlackBerry OS 6 (WebKit) browser
+   //Disambiguate for BlackBerry OS 6 or 7 (WebKit) browser
    if (DetectBlackBerryWebKit())
       return false;
    if (DetectBlackBerry())
@@ -725,10 +726,12 @@ function DetectGameConsole()
 };
 
 //**************************
-// Detects if the current device is a Kindle.
+// Detects if the current device is an Amazon Kindle (eInk devices only).
+// Note: For the Kindle Fire, use the normal Android methods.
 function DetectKindle()
 {
-   if (uagent.search(deviceKindle) > -1)
+   if (uagent.search(deviceKindle) > -1 &&
+       !DetectAndroid())
       return true;
    else
       return false;
@@ -836,7 +839,7 @@ function DetectTierTablet()
 // The quick way to detect for a tier of devices.
 //   This method detects for devices which can 
 //   display iPhone-optimized web content.
-//   Includes iPhone, iPod Touch, Android, WebOS, etc.
+//   Includes iPhone, iPod Touch, Android, Windows Phone 7, WebOS, etc.
 function DetectTierIphone()
 {
    if (DetectIphoneOrIpod())
@@ -844,6 +847,8 @@ function DetectTierIphone()
    if (DetectAndroidPhone())
       return true;
    if (DetectBlackBerryWebKit() && DetectBlackBerryTouch())
+      return true;
+   if (DetectWindowsPhone7())
       return true;
    if (DetectPalmWebOS())
       return true;
@@ -876,9 +881,7 @@ function DetectTierRichCss()
        if (DetectBlackBerryHigh())
           return true;
           
-       //WP7's IE-7-based browser isn't good enough for iPhone Tier.
-       if (DetectWindowsPhone7())
-          return true;
+       //Older Windows 'Mobile' isn't good enough for iPhone Tier.
        if (DetectWindowsMobile())
           return true;
           
