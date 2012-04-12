@@ -5,6 +5,12 @@
 # Made for www.irk.fm website
 # Maintained by irk.fm team. Contact Jury Gerasimov (jury@softshape.com)
 #
+# File version date: April 11, 2012
+#		Update: 
+#		- Added a new variable for the new BlackBerry Curve Touch (9380): deviceBBCurveTouch. 
+#		- Updated DetectBlackBerryTouch() to fix a copy bug (it only looked for the Storm) and add support the new BlackBerry Curve Touch (9380). 
+#		- Updated DetectKindle(): Added the missing 'this' class identifier for the DetectAndroid() call.
+#
 # File version date: Feburary 10, 2012
 #       Creation:
 #       - Cloned from http://code.google.com/p/mobileesp/source/browse/Java/UAgentInfo.java
@@ -78,6 +84,7 @@ class UAgentInfo(object):
     deviceBBBoldTouch = "blackberry 99"  #Bold 99x0 (touchscreen)
     deviceBBTour = "blackberry96"  #Tour
     deviceBBCurve = "blackberry89"  #Curve 2
+    deviceBBCurveTouch = "blackberry 938"  #Curve Touch 9380
     deviceBBTorch = "blackberry 98"  #Torch
     deviceBBPlaybook = "playbook" #PlayBook tablet
     
@@ -418,8 +425,9 @@ class UAgentInfo(object):
         device, such as the Storm, Torch, and Bold Touch. Excludes the Playbook.
         """
         return UAgentInfo.deviceBBStorm in self.__userAgent \
-                or UAgentInfo.deviceBBStorm in self.__userAgent \
-                or UAgentInfo.deviceBBStorm in self.__userAgent
+                or UAgentInfo.deviceBBTorch in self.__userAgent \
+                or UAgentInfo.deviceBBBoldTouch in self.__userAgent \
+                or UAgentInfo.deviceBBCurveTouch in self.__userAgent
 
     def detectBlackBerryHigh(self):
         """Return detection of a Blackberry device with a better browser

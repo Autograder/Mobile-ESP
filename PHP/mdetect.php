@@ -3,6 +3,12 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
+// File version date: April 11, 2012
+//		Update: 
+//		- Added a new variable for the new BlackBerry Curve Touch (9380): deviceBBCurveTouch. 
+//		- Updated DetectBlackBerryTouch() to support the new BlackBerry Curve Touch (9380). 
+//		- Updated DetectKindle(): Added the missing 'this' class identifier for the DetectAndroid() call.
+//
 // File version date: January 21, 2012
 //		Update: 
 //		- Added the constructor method per new features in PHP 5.0: __construct(). 
@@ -113,6 +119,7 @@ class uagent_info
    var $deviceBBBoldTouch = 'blackberry 99'; //Bold 99x0 (touchscreen)
    var $deviceBBTour = 'blackberry96'; //Tour
    var $deviceBBCurve = 'blackberry89'; //Curve2
+   var $deviceBBCurveTouch = 'blackberry 938'; //Curve Touch
    var $deviceBBTorch = 'blackberry 98'; //Torch
    var $deviceBBPlaybook = 'playbook'; //PlayBook tablet
    
@@ -494,13 +501,14 @@ class uagent_info
    }
 
    //**************************
-   // Detects if the current browser is a BlackBerry Touch phone
-   //    device, such as the Storm, Torch, and Bold Touch. Excludes the Playbook.
+   // Detects if the current browser is a BlackBerry Touch phone device with
+   //    a large screen, such as the Storm, Torch, and Bold Touch. Excludes the Playbook.
    function DetectBlackBerryTouch()
-   {
+   {  
        if ((stripos($this->useragent, $this->deviceBBStorm) > -1) ||
 		(stripos($this->useragent, $this->deviceBBTorch) > -1) ||
-		(stripos($this->useragent, $this->deviceBBBoldTouch) > -1))
+		(stripos($this->useragent, $this->deviceBBBoldTouch) > -1) ||
+		(stripos($this->useragent, $this->deviceBBCurveTouch) > -1))
          return $this->true; 
        else
          return $this->false; 
@@ -709,7 +717,7 @@ class uagent_info
    function DetectKindle()
    {
       if (stripos($this->useragent, $this->deviceKindle) > -1 &&
-          DetectAndroid() == $this->false)
+          $this->DetectAndroid() == $this->false)
          return $this->true; 
       else
          return $this->false; 

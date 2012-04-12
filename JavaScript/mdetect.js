@@ -2,6 +2,11 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
+// File version date: April 11, 2012
+//		Update: 
+//		- Added a new variable for the new BlackBerry Curve Touch (9380): deviceBBCurveTouch. 
+//		- Updated DetectBlackBerryTouch() to support the new BlackBerry Curve Touch (9380). 
+//
 // File version date: January 21, 2012
 //		Update: 
 //		- Moved Windows Phone 7 to the iPhone Tier. WP7.5's IE 9-based browser is good enough now.  
@@ -112,6 +117,7 @@ var deviceBBBold = "blackberry97"; //Bold 97x0 (non-touch)
 var deviceBBBoldTouch = "blackberry 99"; //Bold 99x0 (touchscreen)
 var deviceBBTour = "blackberry96"; //Tour
 var deviceBBCurve = "blackberry89"; //Curve 2
+var deviceBBCurveTouch = "blackberry 938"; //Curve Touch 9380
 var deviceBBTorch = "blackberry 98"; //Torch
 var deviceBBPlaybook = "playbook"; //PlayBook tablet
 
@@ -448,7 +454,8 @@ function DetectBlackBerryTouch()
    if (DetectBlackBerry() &&
         ((uagent.search(deviceBBStorm) > -1) ||
         (uagent.search(deviceBBTorch) > -1) ||
-        (uagent.search(deviceBBBoldTouch) > -1)))
+        (uagent.search(deviceBBBoldTouch) > -1) ||
+        (uagent.search(deviceBBCurveTouch) > -1) ))
       return true;
    else
       return false;
