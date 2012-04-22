@@ -2,6 +2,11 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
+// File version date: April 22, 2012
+//		Update: To address additional Kindle issues...
+//		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
+//		- Updated DetectMobileQuick(): Updated to ensure included e-Ink Kindle devices.  
+//
 // File version date: April 11, 2012
 //		Update: 
 //		- Added a new variable for the new BlackBerry Curve Touch (9380): deviceBBCurveTouch. 
@@ -22,13 +27,6 @@
 //		Update: 
 //		- Updated DetectAndroidTablet() to exclude Opera Mini, which was falsely reporting as running on a tablet device when on a phone.
 //		- Updated the user agent (uagent) init technique to handle spiders and such with null values.
-//
-// File version date: August 7, 2011
-//		Update: 
-//		- The Opera for Android browser doesn't follow Google's recommended useragent string guidelines, so some fixes were needed.
-//		- Updated DetectAndroidPhone() and DetectAndroidTablet() to properly detect devices running Opera Mobile.
-//		- Created 2 new methods: DetectOperaAndroidPhone() and DetectOperaAndroidTablet(). 
-//		- Updated DetectTierIphone(). Removed the call to DetectMaemoTablet(), an obsolete mobile OS.
 //
 //
 // LICENSE INFORMATION
@@ -875,7 +873,8 @@ function DetectTierRichCss()
 {
     if (DetectMobileQuick())
     {
-       if (DetectTierIphone())
+       //Exclude iPhone Tier and e-Ink Kindle devices
+       if (DetectTierIphone() || DetectKindle())
           return false;
           
        //The following devices are explicitly ok.

@@ -3,6 +3,11 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
+// File version date: April 22, 2012
+//		Update: To address additional Kindle issues...
+//		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
+//		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices.  
+//
 // File version date: April 11, 2012
 //		Update: 
 //		- Added a new variable for the new BlackBerry Curve Touch (9380): deviceBBCurveTouch. 
@@ -24,13 +29,6 @@
 // File version date: August 16, 2011
 //		Update: 
 //		- Updated DetectAndroidTablet() to exclude Opera Mini, which was falsely reporting as running on a tablet device when on a phone.
-//
-// File version date: August 7, 2011
-//		Update: 
-//		- The Opera for Android browser doesn't follow Google's recommended useragent string guidelines, so some fixes were needed.
-//		- Updated DetectAndroidPhone() and DetectAndroidTablet() to properly detect devices running Opera Mobile.
-//		- Created 2 new methods: DetectOperaAndroidPhone() and DetectOperaAndroidTablet(). 
-//		- Updated DetectTierIphone(). Removed the call to DetectMaemoTablet(), an obsolete mobile OS.
 //
 //
 // LICENSE INFORMATION
@@ -733,7 +731,7 @@ class uagent_info
       //Let's exclude tablets
       if ($this->isTierTablet == $this->true) 
          return $this->false;
-
+      
       //Most mobile browsing is done on smartphones
       if ($this->DetectSmartphone() == $this->true) 
          return $this->true;
@@ -759,6 +757,10 @@ class uagent_info
          return $this->true; 
        if (stripos($this->useragent, $this->mobile) > -1)
          return $this->true; 
+
+      //We also look for Kindle devices
+      if ($this->DetectKindle() == $this->true) 
+         return $this->true;
 
       else
          return $this->false; 
@@ -960,7 +962,9 @@ class uagent_info
    {
       if ($this->DetectMobileQuick() == $this->true) 
       {
-        if (($this->DetectTierIphone() == $this->true))
+        //Exclude iPhone Tier and e-Ink Kindle devices
+        if (($this->DetectTierIphone() == $this->true) ||
+            ($this->DetectKindle() == $this->true))
            return $this->false;
            
         //The following devices are explicitly ok.
@@ -977,8 +981,8 @@ class uagent_info
         if ($this->DetectWindowsMobile() == $this->true)
            return $this->true;
         if (stripos($this->useragent, $this->engineTelecaQ) > -1)
-           return $this->true; 
-           
+           return $this->true;
+         
         //default
         else
            return $this->false;

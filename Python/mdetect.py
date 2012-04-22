@@ -5,6 +5,11 @@
 # Made for www.irk.fm website
 # Maintained by irk.fm team. Contact Jury Gerasimov (jury@softshape.com)
 #
+# File version date: April 22, 2012
+#		Update: To address additional Kindle issues...
+#		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
+#		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices.  
+#
 # File version date: April 11, 2012
 #		Update: 
 #		- Added a new variable for the new BlackBerry Curve Touch (9380): deviceBBCurveTouch. 
@@ -617,6 +622,10 @@ class UAgentInfo(object):
         if UAgentInfo.mobile in self.__userAgent:
             return True
 
+        #We also look for Kindle devices
+        if self.detectKindle():
+            return True
+
         return False
 
 
@@ -759,7 +768,9 @@ class UAgentInfo(object):
         #Note: 'High' BlackBerry devices ONLY
         if not self.detectMobileQuick():
             return False
-        if self.detectTierIphone():
+        #Exclude iPhone Tier and e-Ink Kindle devices
+        if self.detectTierIphone() \
+            or self.detectKindle():
             return False
         #The following devices are explicitly ok.
         #Note: 'High' BlackBerry devices ONLY
