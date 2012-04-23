@@ -1,4 +1,3 @@
-
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
@@ -749,7 +748,7 @@ function DetectKindle()
 // Note: Typically used by the the Kindle Fire.
 function DetectAmazonSilk()
 {
-   if (uagent.search(engineSilk))
+   if (uagent.search(engineSilk) > -1)
       return true;
    else
       return false;
