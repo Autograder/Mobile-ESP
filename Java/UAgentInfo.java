@@ -758,7 +758,7 @@ public class UAgentInfo {
      * @return detection of an Amazon Kindle Fire in Silk mode.
      */
     public boolean detectAmazonSilk() {
-        if (userAgent.indexOf(engineSilk)) {
+        if (userAgent.indexOf(engineSilk) != -1) {
             return true;
         }
         return false;
