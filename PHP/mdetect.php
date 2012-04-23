@@ -728,7 +728,7 @@ class uagent_info
    // Note: Typically used by the the Kindle Fire.
    function DetectAmazonSilk()
    {
-      if (stripos($this->useragent, $this->engineSilk))
+      if (stripos($this->useragent, $this->engineSilk) > -1)
          return $this->true; 
       else
          return $this->false; 
