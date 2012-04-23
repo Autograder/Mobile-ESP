@@ -8,7 +8,8 @@
 # File version date: April 22, 2012
 #		Update: To address additional Kindle issues...
 #		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
-#		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices.  
+#		- Created DetectAmazonSilk(): Created to detect Kindle Fire devices in Silk mode.  
+#		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices and the Kindle Fire in Silk mode.  
 #
 # File version date: April 11, 2012
 #		Update: 
@@ -100,7 +101,8 @@ class UAgentInfo(object):
     engineBlazer = "blazer" #Old Palm
     engineXiino = "xiino" #Another old Palm
     
-    deviceKindle = "kindle"  #Amazon Kindle, eInk one.
+    deviceKindle = "kindle"  #Amazon Kindle, eInk one
+    engineSilk = "silk"  #Amazon's accelerated Silk browser for Kindle Fire
     
     deviceNuvifone = "nuvifone"  #Garmin Nuvifone
     
@@ -583,6 +585,14 @@ class UAgentInfo(object):
         return UAgentInfo.deviceKindle in self.__userAgent \
             and not self.detectAndroid()
 
+    def detectAmazonSilk(self):
+        """Return detection of an Amazon Kindle Fire in Silk mode.
+
+        Detects if the current Amazon device is using the Silk Browser.
+        Note: Typically used by the the Kindle Fire.
+        """
+        return UAgentInfo.engineSilk in self.__userAgent
+
 
     def detectMobileQuick(self):
         """Return detection of any mobile device using the quicker method
@@ -623,7 +633,8 @@ class UAgentInfo(object):
             return True
 
         #We also look for Kindle devices
-        if self.detectKindle():
+        if self.detectKindle() \
+            or self.detectAmazonSilk():
             return True
 
         return False

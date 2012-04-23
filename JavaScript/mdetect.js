@@ -2,10 +2,11 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
-// File version date: April 22, 2012
+// File version date: April 22, 2012 - Second update
 //		Update: To address additional Kindle issues...
 //		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
-//		- Updated DetectMobileQuick(): Updated to ensure included e-Ink Kindle devices.  
+//		- Created DetectAmazonSilk(): Created to detect Kindle Fire devices in Silk mode. 
+//		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices and the Kindle Fire in Silk mode.  
 //
 // File version date: April 11, 2012
 //		Update: 
@@ -126,7 +127,8 @@ var deviceWebOShp = "hpwos"; //For HP's line of WebOS devices
 var engineBlazer = "blazer"; //Old Palm browser
 var engineXiino = "xiino";
 
-var deviceKindle = "kindle"; //Amazon Kindle, eInk one.
+var deviceKindle = "kindle"; //Amazon Kindle, eInk one
+var engineSilk = "silk"; //Amazon's accelerated Silk browser for Kindle Fire
 
 //Initialize variables for mobile-specific content.
 var vndwap = "vnd.wap";
@@ -743,6 +745,17 @@ function DetectKindle()
 }
 
 //**************************
+// Detects if the current Amazon device is using the Silk Browser.
+// Note: Typically used by the the Kindle Fire.
+function DetectAmazonSilk()
+{
+   if (uagent.search(engineSilk))
+      return true;
+   else
+      return false;
+}
+
+//**************************
 // Detects if the current device is a mobile device.
 //  This method catches most of the popular modern devices.
 //  Excludes Apple iPads and other modern tablets.
@@ -784,7 +797,8 @@ function DetectMobileQuick()
    if (uagent.search(mobile) > -1)
       return true;
 
-   if (DetectKindle())
+   if (DetectKindle() ||
+       DetectAmazonSilk())
       return true;
       
    return false;

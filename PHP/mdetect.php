@@ -3,10 +3,11 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
-// File version date: April 22, 2012
+// File version date: April 22, 2012 - Second update
 //		Update: To address additional Kindle issues...
 //		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
-//		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices.  
+//		- Created DetectAmazonSilk(): Created to detect Kindle Fire devices in Silk mode. 
+//		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices and the Kindle Fire in Silk mode.  
 //
 // File version date: April 11, 2012
 //		Update: 
@@ -128,7 +129,8 @@ class uagent_info
    var $engineBlazer = 'blazer'; //Old Palm browser
    var $engineXiino = 'xiino'; //Another old Palm
    
-   var $deviceKindle = 'kindle'; //Amazon Kindle, eInk one.
+   var $deviceKindle = 'kindle'; //Amazon Kindle, eInk one
+   var $engineSilk = 'silk'; //Amazon's accelerated Silk browser for Kindle Fire
    
    //Initialize variables for mobile-specific content.
    var $vndwap = 'vnd.wap';
@@ -721,6 +723,17 @@ class uagent_info
          return $this->false; 
    }
    
+   //**************************
+   // Detects if the current Amazon device is using the Silk Browser.
+   // Note: Typically used by the the Kindle Fire.
+   function DetectAmazonSilk()
+   {
+      if (stripos($this->useragent, $this->engineSilk))
+         return $this->true; 
+      else
+         return $this->false; 
+   }
+   
    
    //**************************
    // The quick way to detect for a mobile device.
@@ -759,7 +772,8 @@ class uagent_info
          return $this->true; 
 
       //We also look for Kindle devices
-      if ($this->DetectKindle() == $this->true) 
+      if ($this->DetectKindle() == $this->true ||
+         $this->DetectAmazonSilk() == $this->true) 
          return $this->true;
 
       else

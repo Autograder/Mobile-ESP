@@ -1,10 +1,11 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
-// File version date: April 22, 2012
+// File version date: April 22, 2012 - Second update
 //		Update: To address additional Kindle issues...
 //		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
-//		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices.  
+//		- Created DetectAmazonSilk(): Created to detect Kindle Fire devices in Silk mode. 
+//		- Updated DetectMobileQuick(): Updated to include e-Ink Kindle devices and the Kindle Fire in Silk mode.  
 //
 // File version date: April 11, 2012
 //		Update: 
@@ -120,7 +121,8 @@ public class UAgentInfo {
     public static final String engineBlazer = "blazer"; //Old Palm
     public static final String engineXiino = "xiino"; //Another old Palm
     
-    public static final String deviceKindle = "kindle";  //Amazon Kindle, eInk one.
+    public static final String deviceKindle = "kindle";  //Amazon Kindle, eInk one
+    public static final String engineSilk = "silk";  //Amazon's accelerated Silk browser for Kindle Fire
     
     public static final String deviceNuvifone = "nuvifone";  //Garmin Nuvifone
     
@@ -751,6 +753,18 @@ public class UAgentInfo {
     }
 
     /**
+     * Detects if the current Amazon device is using the Silk Browser.
+     * Note: Typically used by the the Kindle Fire.
+     * @return detection of an Amazon Kindle Fire in Silk mode.
+     */
+    public boolean detectAmazonSilk() {
+        if (userAgent.indexOf(engineSilk)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      *	Detects if the current device is a mobile device.
      *  This method catches most of the popular modern devices. 
      *  Excludes Apple iPads and other modern tablets.
@@ -795,7 +809,8 @@ public class UAgentInfo {
         }
 
         //We also look for Kindle devices
-        if (detectKindle()) {
+        if (detectKindle()
+                        || detectAmazonSilk()) {
             return true;
         }
 
