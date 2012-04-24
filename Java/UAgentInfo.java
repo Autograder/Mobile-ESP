@@ -1,6 +1,10 @@
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
 //
+// File version date: April 23, 2012
+//		Update:
+//		- Updated DetectAmazonSilk(): Fixed an issue in the detection logic.  
+//
 // File version date: April 22, 2012 - Second update
 //		Update: To address additional Kindle issues...
 //		- Updated DetectRichCSS(): Excluded e-Ink Kindle devices. 
@@ -758,7 +762,7 @@ public class UAgentInfo {
      * @return detection of an Amazon Kindle Fire in Silk mode.
      */
     public boolean detectAmazonSilk() {
-        if (userAgent.indexOf(engineSilk) != -1) {
+        if (userAgent.indexOf(engineSilk)  != -1) {
             return true;
         }
         return false;

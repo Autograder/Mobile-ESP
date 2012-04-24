@@ -1,5 +1,10 @@
+
 /* *******************************************
 // Copyright 2010-2012, Anthony Hand
+//
+// File version date: April 23, 2012
+//		Update:
+//		- Updated DetectAmazonSilk(): Fixed an issue in the detection logic.  
 //
 // File version date: April 22, 2012 - Second update
 //		Update: To address additional Kindle issues...
