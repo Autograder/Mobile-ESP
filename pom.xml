@@ -5,13 +5,35 @@
     <version>7</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.github.autograder</groupId>
+  <groupId>com.studium</groupId>
   <artifactId>mobile-esp</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.3-SNAPSHOT</version>
+  <version>1.1.3.Final</version>
   <name>mobile-esp</name>
   <description>Server independent library to do useragent sniffing</description>
   <url>https://github.com/Autograder/Mobile-ESP</url>
+
+<repositories>
+	<repository>
+		<id>studium_releases</id>
+		<url>https://www.studium.sg/nexus/content/repositories/releases/</url>
+	</repository>
+	<repository>
+		<id>studium_snapshots</id>
+		<url>https://www.studium.sg/nexus/content/repositories/snapshots</url>
+	</repository>
+</repositories>
+<distributionManagement>
+	<repository>
+		<id>studium_releases</id>
+		<url>https://studium.sg/nexus/content/repositories/releases</url>
+	</repository>
+	<snapshotRepository>
+		<id>studium_snapshots</id>
+		<url>https://www.studium.sg/nexus/content/repositories/snapshots</url>
+	</snapshotRepository>
+</distributionManagement>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -19,11 +41,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <scm>
-    <url>https://github.com/Autograder/Mobile-ESP</url>
-    <connection>scm:git:git://github.com/Autograder/Mobile-ESP.git</connection>
-    <developerConnection>scm:git:git@github.com:Autograder/Mobile-ESP.git</developerConnection>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -34,19 +51,6 @@
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
